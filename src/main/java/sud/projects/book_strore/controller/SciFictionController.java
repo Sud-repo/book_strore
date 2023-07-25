@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,26 +25,31 @@ public class SciFictionController {
     SciFictionService service;
 
     @GetMapping("/scifiction")
+    @PreAuthorize("hasRole('USER')")
     public List<Scifiction> getSciFicBooksReq() {
         return service.getSciFicBooks();
     }
 
     @GetMapping("/scifiction/{id}")
+    @PreAuthorize("hasRole('USER')")
     public Optional<Scifiction> getSciFicBookReq(@PathVariable int id) {
         return service.getSciFicBook(id);
     }
 
     @PostMapping("/scifiction")
+    @PreAuthorize("hasRole('ADMIN')")
     public void addSciFicBookReq(@RequestBody Scifiction sf) {
         service.addSciFicBook(sf);
     }
 
     @PutMapping("/scifiction/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateSciFicBookReq(@RequestBody Scifiction sf) {
         service.updateSciFicBook(sf);
     }
 
     @DeleteMapping("/scifiction/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteSciFicBookReq(@PathVariable int id) {
         service.deleteSciFicBook(id);
     }
