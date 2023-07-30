@@ -30,10 +30,14 @@ public class NonFictionController {
         return service.getNonFicBooks();
     }
 
-    @GetMapping("/nonfiction/{id}")
+    @GetMapping("/nonfiction/orderbook{id}")
     @PreAuthorize("hasRole('USER')")
-    public Optional<Nonfiction> getNonFicBookReq(@PathVariable int id) {
-        return service.getNonFicBook(id);
+    public String getNonFicBookReq(@PathVariable int id) {
+        if (service.getNonFicBook(id).get().getAvailability().equals("Not available")) {
+        return ("Book: '" + service.getNonFicBook(id).get().getName() + "' out of stock");
+        } else {
+            return "<h1>Buy!!!</h1>";
+        }
     }
 
     @PostMapping("/nonfiction")

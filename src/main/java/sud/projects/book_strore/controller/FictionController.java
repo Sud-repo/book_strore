@@ -30,10 +30,14 @@ public class FictionController {
         return service.getFicBooks();
     }
 
-    @GetMapping("/fiction/{id}")
+    @GetMapping("/fiction/orderbook{id}")
     @PreAuthorize("hasRole('USER')")
-    public Optional<Fiction> getFicBookReq(@PathVariable int id) {
-        return service.getFicBook(id);
+    public String getFicBookReq(@PathVariable int id) {
+        if (service.getFicBook(id).get().getAvailability().equals("Not available")) {
+        return ("Book: '" + service.getFicBook(id).get().getName() + "' out of stock");
+        } else {
+            return "<h1>Buy!!!</h1>";
+        }
     }
 
     @PostMapping("/fiction")

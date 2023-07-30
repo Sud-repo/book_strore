@@ -30,10 +30,14 @@ public class SciFictionController {
         return service.getSciFicBooks();
     }
 
-    @GetMapping("/scifiction/{id}")
+    @GetMapping("/scifiction/orderbook{id}")
     @PreAuthorize("hasRole('USER')")
-    public Optional<Scifiction> getSciFicBookReq(@PathVariable int id) {
-        return service.getSciFicBook(id);
+    public String getSciFicBookReq(@PathVariable int id) {
+        if (service.getSciFicBook(id).get().getAvailability().equals("Not available")) {
+            return ("Book: '" + service.getSciFicBook(id).get().getName() + "' out of stock");
+            } else {
+                return "<h1>Buy!!!</h1>";
+            }
     }
 
     @PostMapping("/scifiction")
